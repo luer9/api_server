@@ -3,12 +3,15 @@ const cors = require('cors')
 const config = require('./config')
 const userRouter = require('./router/user')
 const userInfoRouter = require('./router/userinfo')
+const artCateRouter = require('./router/artcate')
+const articleRouter = require('./router/article')
 // const expressJoi = require('express-joi')
 const expressJWT = require('express-jwt')
 const Joi = require('joi')
 const app = express()
 
-
+// 托管静态资源文件
+app.use('/uploads', express.static('./uploads'))
 
 // 配置跨域中间件
 app.use(cors())
@@ -34,6 +37,11 @@ app.use(expressJWT({secret: config.jwtSecretKey}).unless({path: [/^\/api\//]}))
 app.use('/api', userRouter)
 // 用户信息路由
 app.use('/my', userInfoRouter)
+// 文章分类路由模块
+app.use('/my/artcate', artCateRouter)
+
+// 文章路由模块
+app.use('/my/article', articleRouter)
 
 // 错误中间件
 app.use((err, req, res, next) => {
